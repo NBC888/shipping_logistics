@@ -1,0 +1,223 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "format:PT-{YYYY}-{#####}",
+ "creation": "2026-04-21 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "status_section",
+  "status",
+  "transport_date",
+  "creation_date",
+  "column_break_driver",
+  "driver",
+  "departing_address",
+  "shipping_provider_section",
+  "shipping_provider",
+  "shipping_provider_address",
+  "packages_section",
+  "express_packages",
+  "international_packages",
+  "column_break_packages",
+  "us_packages",
+  "canadian_packages",
+  "total_packages",
+  "documents_section",
+  "border_form",
+  "manifest",
+  "shipping_provider_form",
+  "billing_section",
+  "driver_invoice"
+ ],
+ "fields": [
+  {
+   "fieldname": "status_section",
+   "fieldtype": "Section Break",
+   "label": "Status"
+  },
+  {
+   "bold": 1,
+   "default": "Scheduled",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Scheduled\nIn Progress\nCompleted\nOverdue\nCancelled",
+   "reqd": 1
+  },
+  {
+   "fieldname": "transport_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date of Transport",
+   "reqd": 1
+  },
+  {
+   "fieldname": "creation_date",
+   "fieldtype": "Date",
+   "label": "Date of Creation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_driver",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Driver",
+   "options": "Driver",
+   "reqd": 1
+  },
+  {
+   "description": "Auto-filled from the selected Driver's Address.",
+   "fieldname": "departing_address",
+   "fieldtype": "Link",
+   "label": "Departing Address",
+   "options": "Address",
+   "read_only": 1
+  },
+  {
+   "fieldname": "shipping_provider_section",
+   "fieldtype": "Section Break",
+   "label": "Shipping Provider"
+  },
+  {
+   "description": "Supplier must belong to the 'Shipping Provider' Supplier Group.",
+   "fieldname": "shipping_provider",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Shipping Provider",
+   "options": "Supplier",
+   "reqd": 1
+  },
+  {
+   "fieldname": "shipping_provider_address",
+   "fieldtype": "Link",
+   "label": "Shipping Provider Address",
+   "options": "Address",
+   "reqd": 1
+  },
+  {
+   "fieldname": "packages_section",
+   "fieldtype": "Section Break",
+   "label": "Package Counts"
+  },
+  {
+   "default": "0",
+   "fieldname": "express_packages",
+   "fieldtype": "Int",
+   "label": "Express Packages",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "international_packages",
+   "fieldtype": "Int",
+   "label": "International Packages",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "column_break_packages",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "us_packages",
+   "fieldtype": "Int",
+   "label": "US Packages",
+   "non_negative": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "canadian_packages",
+   "fieldtype": "Int",
+   "label": "Canadian Packages",
+   "non_negative": 1
+  },
+  {
+   "bold": 1,
+   "default": "0",
+   "fieldname": "total_packages",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total Packages",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "documents_section",
+   "fieldtype": "Section Break",
+   "label": "Documents"
+  },
+  {
+   "fieldname": "border_form",
+   "fieldtype": "Attach",
+   "label": "Border Form"
+  },
+  {
+   "fieldname": "manifest",
+   "fieldtype": "Attach",
+   "label": "Manifest"
+  },
+  {
+   "fieldname": "shipping_provider_form",
+   "fieldtype": "Attach",
+   "label": "Shipping Provider Form"
+  },
+  {
+   "fieldname": "billing_section",
+   "fieldtype": "Section Break",
+   "label": "Billing"
+  },
+  {
+   "fieldname": "driver_invoice",
+   "fieldtype": "Link",
+   "label": "Driver's Supplier Invoice",
+   "options": "Purchase Invoice"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 0,
+ "links": [],
+ "modified": "2026-04-21 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Shipping Logistics",
+ "name": "Package Transport",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Stock Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "driver",
+ "track_changes": 1
+}
