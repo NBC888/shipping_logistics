@@ -43,18 +43,27 @@ class PackageTransport(Document):
 
 @frappe.whitelist()
 def get_driver_details(driver: str) -> dict:
-    """Return the driver's departing address for the client form.
+    """Return the driver's departing address and transporter (Supplier) for the client form.
 
     Uses a whitelisted server method so the client doesn't need field-level
     read access on Driver (which would otherwise fail with 'field not
-    permitted in query').
+    permitted in query'). `transporter` is the standard ERPNext Driver field
+    that links to the Supplier the driver bills under.
     """
     if not driver:
         return {}
     # Confirm the caller is allowed to read this Driver record.
     frappe.has_permission("Driver", doc=driver, throw=True)
-    address = frappe.db.get_value("Driver", driver, "address")
-    return {"address": address}
+    row = frappe.db.get_value(
+        "Driver",
+        driver,
+        ["address", "transporter"],
+        as_dict=True,
+    ) or {}
+    return {
+        "address": row.get("address"),
+        "transporter": row.get("transporter"),
+    }
 
 
 def mark_overdue_transports():
