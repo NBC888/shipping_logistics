@@ -1,3 +1,23 @@
+const DRIVER_DETAILS_METHOD =
+    "shipping_logistics.shipping_logistics.doctype.package_transport.package_transport.get_driver_details";
+
+function load_driver_details(frm) {
+    if (!frm.doc.driver) {
+        frm.doc.__driver_supplier = null;
+        return Promise.resolve({});
+    }
+    return frappe
+        .call({
+            method: DRIVER_DETAILS_METHOD,
+            args: { driver: frm.doc.driver },
+        })
+        .then((r) => {
+            const data = (r && r.message) || {};
+            frm.doc.__driver_supplier = data.supplier || null;
+            return data;
+        });
+}
+
 frappe.ui.form.on("Package Transport", {
     setup(frm) {
         // Restrict Shipping Provider picker to suppliers in the "Shipping Provider" Supplier Group.
@@ -19,8 +39,7 @@ frappe.ui.form.on("Package Transport", {
             };
         });
 
-        // Restrict driver invoice picker. If the Driver has a linked Supplier,
-        // narrow to Purchase Invoices for that Supplier.
+        // Narrow the driver invoice picker to the Driver's linked Supplier when known.
         frm.set_query("driver_invoice", () => {
             const filters = { docstatus: ["!=", 2] };
             if (frm.doc.__driver_supplier) {
@@ -31,13 +50,9 @@ frappe.ui.form.on("Package Transport", {
     },
 
     refresh(frm) {
-        // Cache the driver's linked Supplier (if any) for the driver_invoice query.
+        // Cache the driver's linked Supplier for the driver_invoice query on form load.
         if (frm.doc.driver && !frm.doc.__driver_supplier) {
-            frappe.db.get_value("Driver", frm.doc.driver, "supplier").then((r) => {
-                if (r && r.message) {
-                    frm.doc.__driver_supplier = r.message.supplier || null;
-                }
-            });
+            load_driver_details(frm);
         }
     },
 
@@ -47,14 +62,9 @@ frappe.ui.form.on("Package Transport", {
             frm.doc.__driver_supplier = null;
             return;
         }
-        frappe.db
-            .get_value("Driver", frm.doc.driver, ["address", "supplier"])
-            .then((r) => {
-                if (r && r.message) {
-                    frm.set_value("departing_address", r.message.address || null);
-                    frm.doc.__driver_supplier = r.message.supplier || null;
-                }
-            });
+        load_driver_details(frm).then((data) => {
+            frm.set_value("departing_address", data.address || null);
+        });
     },
 
     shipping_provider(frm) {

@@ -41,6 +41,30 @@ class PackageTransport(Document):
                 self.departing_address = addr
 
 
+@frappe.whitelist()
+def get_driver_details(driver: str) -> dict:
+    """Return the driver's address and linked supplier for the client form.
+
+    Uses a whitelisted server method so the client doesn't need field-level
+    read access on every Driver field (which would otherwise fail with
+    'field not permitted in query').
+    """
+    if not driver:
+        return {}
+    # Confirm the caller is allowed to read this Driver record.
+    frappe.has_permission("Driver", doc=driver, throw=True)
+    row = frappe.db.get_value(
+        "Driver",
+        driver,
+        ["address", "supplier"],
+        as_dict=True,
+    ) or {}
+    return {
+        "address": row.get("address"),
+        "supplier": row.get("supplier"),
+    }
+
+
 def mark_overdue_transports():
     """Daily scheduler job: flip Scheduled records whose transport date has passed to Overdue."""
     frappe.db.sql(
