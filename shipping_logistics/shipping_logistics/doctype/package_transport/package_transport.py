@@ -58,12 +58,17 @@ def get_driver_details(driver: str) -> dict:
 
 
 def mark_overdue_transports():
-    """Daily scheduler job: flip Scheduled records whose transport date has passed to Overdue."""
+    """Daily scheduler job: flip Scheduled records whose transport date has passed to Overdue.
+
+    Skips cancelled documents (docstatus=2). Submitted documents (docstatus=1)
+    are updated too — `status` is marked allow_on_submit, so this is safe.
+    """
     frappe.db.sql(
         """
         UPDATE `tabPackage Transport`
         SET status = 'Overdue', modified = %s, modified_by = %s
         WHERE status = 'Scheduled'
+          AND docstatus < 2
           AND transport_date < %s
         """,
         (frappe.utils.now(), "Administrator", today()),

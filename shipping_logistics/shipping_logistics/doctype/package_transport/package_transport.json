@@ -37,6 +37,7 @@
    "label": "Status"
   },
   {
+   "allow_on_submit": 1,
    "bold": 1,
    "default": "Scheduled",
    "fieldname": "status",
@@ -55,10 +56,10 @@
    "reqd": 1
   },
   {
+   "default": "Today",
    "fieldname": "creation_date",
    "fieldtype": "Date",
-   "label": "Date of Creation",
-   "read_only": 1
+   "label": "Date of Creation"
   },
   {
    "fieldname": "column_break_driver",
@@ -181,7 +182,7 @@
   }
  ],
  "index_web_pages_for_search": 1,
- "is_submittable": 0,
+ "is_submittable": 1,
  "links": [],
  "modified": "2026-04-21 00:00:00",
  "modified_by": "Administrator",
@@ -191,6 +192,8 @@
  "owner": "Administrator",
  "permissions": [
   {
+   "amend": 1,
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -200,9 +203,12 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
    "write": 1
   },
   {
+   "amend": 1,
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -212,6 +218,7 @@
    "report": 1,
    "role": "Stock Manager",
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],
