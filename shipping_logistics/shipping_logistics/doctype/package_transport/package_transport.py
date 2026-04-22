@@ -9,11 +9,11 @@ class PackageTransport(Document):
             self.creation_date = today()
 
         # Initial status: if scheduled but transport date is already past, mark Overdue.
-        if not self.status or self.status == "Scheduled":
+        if not self.shipment_status or self.shipment_status == "Scheduled":
             if self.transport_date and getdate(self.transport_date) < getdate(today()):
-                self.status = "Overdue"
+                self.shipment_status = "Overdue"
             else:
-                self.status = "Scheduled"
+                self.shipment_status = "Scheduled"
 
     def validate(self):
         self.total_packages = (
@@ -70,13 +70,13 @@ def mark_overdue_transports():
     """Daily scheduler job: flip Scheduled records whose transport date has passed to Overdue.
 
     Skips cancelled documents (docstatus=2). Submitted documents (docstatus=1)
-    are updated too — `status` is marked allow_on_submit, so this is safe.
+    are updated too — `shipment_status` is marked allow_on_submit, so this is safe.
     """
     frappe.db.sql(
         """
         UPDATE `tabPackage Transport`
-        SET status = 'Overdue', modified = %s, modified_by = %s
-        WHERE status = 'Scheduled'
+        SET shipment_status = 'Overdue', modified = %s, modified_by = %s
+        WHERE shipment_status = 'Scheduled'
           AND docstatus < 2
           AND transport_date < %s
         """,

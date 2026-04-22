@@ -7,7 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "status_section",
-  "status",
+  "shipment_status",
   "transport_date",
   "creation_date",
   "column_break_driver",
@@ -34,17 +34,17 @@
   {
    "fieldname": "status_section",
    "fieldtype": "Section Break",
-   "label": "Status"
+   "label": "Shipment Status"
   },
   {
    "allow_on_submit": 1,
    "bold": 1,
    "default": "Scheduled",
-   "fieldname": "status",
+   "fieldname": "shipment_status",
    "fieldtype": "Select",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Status",
+   "label": "Shipment Status",
    "options": "Scheduled\nIn Progress\nCompleted\nOverdue\nCancelled",
    "reqd": 1
   },
